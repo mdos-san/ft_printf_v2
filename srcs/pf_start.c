@@ -48,7 +48,7 @@ void		pf_start(t_pf *pf)
 	{
 		if (pf->status == STATUS_OUT)
 			out(pf, i);
-		else if (pf->status == STATUS_IN)
+		else if (pf->status > 0)
 			in(pf, i);
 		++i;
 	}
