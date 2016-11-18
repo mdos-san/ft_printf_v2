@@ -50,7 +50,10 @@ DEL_1=$(TMP_C:.c=.o)
 
 TMP_C_2 = \
 		 	ft_printf.c\
-			pf_init.c
+			pf_init.c\
+			pf_start.c\
+			pf_process.c\
+			pf_buffer_add.c
 SRC_C_2=$(TMP_C_2:%=srcs/%)
 SRC_O_2=$(SRC_C_2:.c=.o)
 DEL_2=$(TMP_C_2:.c=.o)
