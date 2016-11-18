@@ -8,6 +8,8 @@ void	pf_process(t_pf *pf)
 		s = va_arg(pf->arg, char *);
 	if (pf->type == 'd' || pf->type == 'i')
 		s = ft_itoa_base(va_arg(pf->arg, int), 10);
+	if (pf->type == 'u')
+		s = ft_uitoa_base(va_arg(pf->arg, int), 10);
 	if (pf->type == 'o')
 		s = ft_uitoa_base(va_arg(pf->arg, int), 8);
 	if (pf->type == 'x')
