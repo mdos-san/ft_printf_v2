@@ -8,6 +8,8 @@
 # define PF_BUFFER 1024
 # define STATUS_OUT 0
 # define STATUS_IN 1
+# define STATUS_W 2
+# define STATUS_P 3
 
 /*
 **|
@@ -22,6 +24,7 @@
 **| list_flags: char *, each char is a flag managed.
 **| list_types: char *, each char is a type managed.
 **|	type: actual type
+**| width: width passed in placeholder
 */
 
 typedef struct		s_pf
@@ -35,6 +38,7 @@ typedef struct		s_pf
 	char			*list_flags;
 	char			*list_types;
 	char			type;
+	unsigned int	width;
 }					t_pf;
 
 int		ft_printf(char *str, ...);

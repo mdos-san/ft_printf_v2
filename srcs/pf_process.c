@@ -1,8 +1,20 @@
 #include "libftprintf.h"
 
+static void	width(t_pf *pf, char *s)
+{
+	char	*w;
+
+	pf->width = pf->width - ft_strlen(s);
+	w = ft_strnew(pf->width);
+	ft_memset(w, ' ', pf->width);
+	pf_buffer_add(pf, w);
+	pf->width = 0;
+}
+
 void	pf_process(t_pf *pf)
 {
 	char	*s;
+	char	*tmp_str;
 
 	if (pf->type == 'c')
 	{
@@ -21,8 +33,10 @@ void	pf_process(t_pf *pf)
 		s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 16);
 	if (pf->type == 'p')
 	{
-		pf_buffer_add(pf, "0x");
-		s = ft_uitoa_base(va_arg(pf->arg, unsigned long long), 16);
+		tmp_str = ft_uitoa_base(va_arg(pf->arg, unsigned long long), 16);
+		s = ft_strjoin("0x", tmp_str);
+		ft_strdel(&tmp_str);
 	}
+	width(pf, s);
 	pf_buffer_add(pf, s);
 }
