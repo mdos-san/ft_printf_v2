@@ -84,7 +84,11 @@ void	pf_process(t_pf *pf)
 		s[0] = (char)va_arg(pf->arg, int);
 	}
 	if (pf->type == 's')
+	{
 		s = ft_strdup(va_arg(pf->arg, char *));
+		if (s == NULL)
+			s = ft_strdup("(null)");
+	}
 	if (pf->type == 'd' || pf->type == 'i')
 		s = ft_itoa_base(va_arg(pf->arg, int), 10);
 	if (pf->type == 'u')
