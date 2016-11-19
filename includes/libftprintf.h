@@ -9,7 +9,10 @@
 # define STATUS_OUT 0
 # define STATUS_IN 1
 # define STATUS_W 2
-# define STATUS_P 3
+# define STATUS_W_END 3
+# define STATUS_P 4
+# define STATUS_P_END 5
+# define STATUS_P_PAR 6
 
 /*
 **|
@@ -25,6 +28,8 @@
 **| list_types: char *, each char is a type managed.
 **|	type: actual type
 **| width: width passed in placeholder
+**| precision: precision passed in placeholder
+**| f_plus:		Flag '+' status
 */
 
 typedef struct		s_pf
@@ -39,6 +44,11 @@ typedef struct		s_pf
 	char			*list_types;
 	char			type;
 	unsigned int	width;
+	unsigned int	precision;
+	char			f_plus;
+	char			f_space;
+	char			f_minus;
+	char			f_zero;
 }					t_pf;
 
 int		ft_printf(char *str, ...);

@@ -25,6 +25,8 @@ char	*ft_itoa_base(long long nbr, unsigned int base)
 		nbr /= base;
 		++i;
 	}
+	(neg == -1) ? buf[1022 - i] = '-' : 0;
+	(neg == -1) ? ++i : 0;
 	return (ft_strdup(buf + 1022 - i + 1));
 }
 
