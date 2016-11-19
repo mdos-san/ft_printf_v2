@@ -9,6 +9,11 @@ static void flag(t_pf *pf, char **s)
 		if (pf->f_space == 1 && (*s)[0] != '-')
 			(*s) = ft_strjoin(" ", *s);
 	}
+	if (pf->type == 'o')
+	{
+		if (pf->f_sharp && ft_strcmp("0", *s) != 0)
+			*s = ft_strjoin("0", *s);
+	}
 }
 
 static void precision(t_pf *pf, char **s)

@@ -34,6 +34,9 @@ static void flag_init(t_pf *pf)
 {
 	pf->f_plus = 0;
 	pf->f_space = 0;
+	pf->f_minus = 0;
+	pf->f_sharp = 0;
+	pf->f_zero = 0;
 }
 
 static void in(t_pf *pf, unsigned int i)
@@ -49,6 +52,10 @@ static void in(t_pf *pf, unsigned int i)
 			pf->f_space = 1;
 		if (pf->input[i] == '-')
 			pf->f_minus = 1;
+		if (pf->input[i] == '0')
+			pf->f_zero = 1;
+		if (pf->input[i] == '#')
+			pf->f_sharp = 1;
 	}
 	else if (pf->status < STATUS_W
 		&& (ft_isdigit(pf->input[i]) || pf->input[i] == '*'))

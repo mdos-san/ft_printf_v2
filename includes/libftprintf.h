@@ -49,6 +49,7 @@ typedef struct		s_pf
 	char			f_space;
 	char			f_minus;
 	char			f_zero;
+	char			f_sharp;
 }					t_pf;
 
 int		ft_printf(char *str, ...);
