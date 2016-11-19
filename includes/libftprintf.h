@@ -42,7 +42,7 @@ t_pf	pf_init(char *str, va_list ap);
 void	pf_start(t_pf *pf);
 void	pf_process(t_pf *pf);
 void	pf_buffer_add(t_pf *pf, char *str);
-char	*ft_itoa_base(int nbr, unsigned int base);
-char	*ft_uitoa_base(unsigned int nbr, unsigned int base);
+char	*ft_itoa_base(long long nbr, unsigned int base);
+char	*ft_uitoa_base(unsigned long long nbr, unsigned int base);
 
 #endif

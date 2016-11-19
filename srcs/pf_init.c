@@ -9,7 +9,7 @@ t_pf	pf_init(char *str, va_list ap)
 	pf.number_buffer = 0;
 	pf.status = 0;
 	pf.list_flags = "";
-	pf.list_types = "sdiuox";
+	pf.list_types = "csdiuoxp";
 	va_copy(pf.arg, ap);
 	return (pf);
 }

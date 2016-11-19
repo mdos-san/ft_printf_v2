@@ -1,11 +1,11 @@
 #include "libftprintf.h"
 
-char	*ft_itoa_base(int nbr, unsigned int base)
+char	*ft_itoa_base(long long nbr, unsigned int base)
 {
-	int		i;
-	int		mod;
-	char	buf[1024];
-	int		neg;
+	int			i;
+	long long	mod;
+	char		buf[1024];
+	int			neg;
 
 	i = 0;
 	ft_bzero(buf, 1024);
@@ -28,11 +28,11 @@ char	*ft_itoa_base(int nbr, unsigned int base)
 	return (ft_strdup(buf + 1022 - i + 1));
 }
 
-char	*ft_uitoa_base(unsigned int nbr, unsigned int base)
+char	*ft_uitoa_base(unsigned long long nbr, unsigned int base)
 {
-	int		i;
-	int		mod;
-	char	buf[1024];
+	int					i;
+	unsigned long long	mod;
+	char				buf[1024];
 
 	i = 0;
 	ft_bzero(buf, 1024);
