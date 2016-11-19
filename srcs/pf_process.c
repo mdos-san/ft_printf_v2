@@ -14,6 +14,11 @@ static void flag(t_pf *pf, char **s)
 		if (pf->f_sharp && ft_strcmp("0", *s) != 0)
 			*s = ft_strjoin("0", *s);
 	}
+	if (pf->type == 'x')
+	{
+		if (pf->f_sharp && ft_strcmp("0", *s) != 0)
+			*s = ft_strjoin("0x", *s);
+	}
 }
 
 static void precision(t_pf *pf, char **s)
@@ -29,13 +34,14 @@ static void precision(t_pf *pf, char **s)
 		if (pf->status == STATUS_P_END && pf->precision == 0)
 			(*s)[0] = '\0';
 	}
-	else if (pf->type == 'p' && pf->precision > length)
+	else if (pf->type == 'p' && pf->precision > length - 2)
 	{
-		str = ft_strnew(pf->precision);
-		ft_memset(str, '0', pf->precision);
-		str[length - 4] = '0';
-		str[length - 3] = 'x';
-		*s = ft_strjoin(str + length - 4, *s + 2);
+		str = ft_strnew(pf->precision + 2);
+		ft_memset(str, '0', pf->precision + 2);
+		str[0] = '0';
+		str[1] = 'x';
+		str[pf->precision - length + 4] = 0;
+		*s = ft_strjoin(str, *s + 2);
 	}
 	else if ((pf->type == 'd' || pf->type == 'i'))
 	{
@@ -56,7 +62,25 @@ static void precision(t_pf *pf, char **s)
 			}
 		}
 		else if (pf->status == STATUS_P_END && pf->precision == 0 && ft_strcmp("0", *s) == 0)
-				(*s)[0] = '\0';
+			(*s)[0] = '\0';
+	}
+	else if (pf->type == 'x')
+	{
+		if (pf->f_sharp && pf->precision > length - 2)
+		{
+			str = ft_strnew(pf->precision + 2);
+			ft_memset(str, '0', pf->precision + 2);
+			str[0] = '0';
+			str[1] = 'x';
+			str[pf->precision - length + 4] = 0;
+			*s = ft_strjoin(str, *s + 2);
+		}
+		else
+		{
+			str = ft_strnew(pf->precision);
+			ft_memset(str, '0', pf->precision);
+			*s = ft_strjoin(str + length, *s);
+		}
 	}
 	else if (pf->precision > length)
 	{
