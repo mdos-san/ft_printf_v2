@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/20 09:13:54 by mdos-san          #+#    #+#             */
+/*   Updated: 2016/11/20 09:14:04 by mdos-san         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LIBFTPRINTF_H
 # define LIBFTPRINTF_H
 
@@ -52,16 +64,17 @@ typedef struct		s_pf
 	char			f_sharp;
 }					t_pf;
 
-int		ft_printf(char *str, ...);
-t_pf	pf_init(char *str, va_list ap);
-void	pf_start(t_pf *pf);
-void	pf_process(t_pf *pf);
-void	pf_buffer_add(t_pf *pf, char *str);
-void	pf_buffer_add_null(t_pf *pf);
-void	pf_buffer_nadd(t_pf *pf, char *str, int n);
-char	*ft_itoa_base(long long nbr, unsigned int base);
-char	*ft_uitoa_base(unsigned long long nbr, unsigned int base, int up);
-char	*get_wchar(int c);
-char	*get_wstr(int *istr);
+int					ft_printf(char *str, ...);
+t_pf				pf_init(char *str, va_list ap);
+void				pf_start(t_pf *pf);
+void				pf_process(t_pf *pf);
+void				pf_buffer_add(t_pf *pf, char *str);
+void				pf_buffer_add_null(t_pf *pf);
+void				pf_buffer_nadd(t_pf *pf, char *str, int n);
+char				*ft_itoa_base(long long nbr, unsigned int base);
+char				*ft_uitoa_base
+						(unsigned long long nbr, unsigned int base, int up);
+char				*get_wchar(int c);
+char				*get_wstr(int *istr);
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pf_start.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/20 09:09:25 by mdos-san          #+#    #+#             */
+/*   Updated: 2016/11/20 09:13:28 by mdos-san         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libftprintf.h"
 
 static void	out(t_pf *pf, unsigned int i)
@@ -17,7 +29,7 @@ static void	out(t_pf *pf, unsigned int i)
 	}
 }
 
-static void go_out(t_pf *pf, unsigned int i)
+static void	go_out(t_pf *pf, unsigned int i)
 {
 	pf->status = STATUS_OUT;
 	pf->buffer[pf->index] = pf->input[i];
@@ -30,7 +42,7 @@ static void go_out(t_pf *pf, unsigned int i)
 	}
 }
 
-static void flag_init(t_pf *pf)
+static void	flag_init(t_pf *pf)
 {
 	pf->f_plus = 0;
 	pf->f_space = 0;
@@ -39,7 +51,7 @@ static void flag_init(t_pf *pf)
 	pf->f_zero = 0;
 }
 
-static void in(t_pf *pf, unsigned int i)
+static void	in(t_pf *pf, unsigned int i)
 {
 	if (ft_strchr(pf->list_flags, pf->input[i]) && pf->status < STATUS_W)
 	{
@@ -66,8 +78,6 @@ static void in(t_pf *pf, unsigned int i)
 	}
 	else if (pf->status == STATUS_W)
 		pf->status = (ft_isdigit(pf->input[i + 1])) ? STATUS_W : STATUS_W_END;
-
-//PRECISON
 	else if (pf->status < STATUS_P && pf->input[i] == '.')
 	{
 		pf->status = STATUS_P;
@@ -92,8 +102,6 @@ static void in(t_pf *pf, unsigned int i)
 	}
 	else if (pf->status == STATUS_P_PAR)
 		pf->status = (ft_isdigit(pf->input[i + 1])) ? STATUS_P_PAR : STATUS_P_END;
-//END
-
 	else if (ft_strchr(pf->list_types, pf->input[i]))
 	{
 		pf->type = pf->input[i];

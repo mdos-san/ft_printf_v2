@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pf_process.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
+/*   Updated: 2016/11/20 09:15:56 by mdos-san         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libftprintf.h"
 
-static void flag(t_pf *pf, char **s)
+static void	flag(t_pf *pf, char **s)
 {
 	if (pf->type == 'd' || pf->type == 'i')
 	{
@@ -21,7 +33,7 @@ static void flag(t_pf *pf, char **s)
 	}
 }
 
-static void precision(t_pf *pf, char **s)
+static void	precision(t_pf *pf, char **s)
 {
 	unsigned int	length;
 	char			*str;
