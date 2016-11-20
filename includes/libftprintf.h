@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:13:54 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/20 09:14:04 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/20 09:32:45 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ typedef struct		s_pf
 	char			f_minus;
 	char			f_zero;
 	char			f_sharp;
+	char			*list_mod;
+	char			mod_l;
 }					t_pf;
 
 int					ft_printf(char *str, ...);

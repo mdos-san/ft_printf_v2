@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/20 09:15:56 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/20 09:41:38 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,34 +122,64 @@ void	pf_process(t_pf *pf)
 
 	if (pf->type == 'c')
 	{
-		s = ft_strnew(1);
-		s[0] = (char)va_arg(pf->arg, int);
-		if (s[0] == '\0')
-			pf_buffer_add_null(pf);
+		if (pf->mod_l)
+			pf->type = 'C';
+		else
+		{
+			s = ft_strnew(1);
+			s[0] = (char)va_arg(pf->arg, int);
+			if (s[0] == '\0')
+				pf_buffer_add_null(pf);
+		}
 	}
 	if (pf->type == 'C')
 		s = (get_wchar(va_arg(pf->arg, int)));
 	if (pf->type == 's')
 	{
-		s = ft_strdup(va_arg(pf->arg, char *));
-		s = (s == NULL) ? ft_strdup("(null)") : s;
+		if (pf->mod_l)
+			pf->type = 'S';
+		else
+		{
+			s = ft_strdup(va_arg(pf->arg, char *));
+			s = (s == NULL) ? ft_strdup("(null)") : s;
+		}
 	}
 	if (pf->type == 'S')
 		s = get_wstr(va_arg(pf->arg, int *));
 	if (pf->type == 'd' || pf->type == 'D' || pf->type == 'i')
-		s = (pf->type == 'd' || pf->type == 'i')
-			? ft_itoa_base(va_arg(pf->arg, int), 10)
-			: ft_itoa_base(va_arg(pf->arg, long), 10);
+	{
+		if (pf->mod_l)
+			s = ft_itoa_base(va_arg(pf->arg, long), 10);
+		else
+			s = (pf->type == 'd' || pf->type == 'i')
+				? ft_itoa_base(va_arg(pf->arg, int), 10)
+				: ft_itoa_base(va_arg(pf->arg, long), 10);
+	}
 	if (pf->type == 'u' || pf->type == 'U')
-		s = (pf->type == 'u')
-			? ft_uitoa_base(va_arg(pf->arg, unsigned int), 10, 0)
-			: ft_uitoa_base(va_arg(pf->arg, unsigned long), 10, 0);
+	{
+		if (pf->mod_l)
+			s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 10, 0);
+		else
+			s = (pf->type == 'u')
+				? ft_uitoa_base(va_arg(pf->arg, unsigned int), 10, 0)
+				: ft_uitoa_base(va_arg(pf->arg, unsigned long), 10, 0);
+	}
 	if (pf->type == 'o' || pf->type == 'O')
-		s = (pf->type == 'o')
-			? ft_uitoa_base(va_arg(pf->arg, unsigned int), 8, 0)
-			: ft_uitoa_base(va_arg(pf->arg, unsigned long), 8, 0);
+	{
+		if (pf->mod_l)
+			s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 8, 0);
+		else
+			s = (pf->type == 'o')
+				? ft_uitoa_base(va_arg(pf->arg, unsigned int), 8, 0)
+				: ft_uitoa_base(va_arg(pf->arg, unsigned long), 8, 0);
+	}
 	if (pf->type == 'x' || pf->type == 'X')
-		s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 16, ((pf->type == 'x') ? 0 : 1));
+	{
+		if (pf->mod_l)
+			s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 16, ((pf->type == 'x') ? 0 : 1));
+		else
+			s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 16, ((pf->type == 'x') ? 0 : 1));
+	}
 	if (pf->type == 'p')
 	{
 		tmp_str = ft_uitoa_base(va_arg(pf->arg, unsigned long long), 16, 0);

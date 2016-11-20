@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:25 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/20 09:13:28 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/20 09:37:14 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void	flag_init(t_pf *pf)
 	pf->f_minus = 0;
 	pf->f_sharp = 0;
 	pf->f_zero = 0;
+	pf->mod_l = 0;
 }
 
 static void	in(t_pf *pf, unsigned int i)
@@ -102,6 +103,11 @@ static void	in(t_pf *pf, unsigned int i)
 	}
 	else if (pf->status == STATUS_P_PAR)
 		pf->status = (ft_isdigit(pf->input[i + 1])) ? STATUS_P_PAR : STATUS_P_END;
+	else if (ft_strchr(pf->list_mod, pf->input[i]))
+	{
+		if (pf->input[i] == 'l')
+			++pf->mod_l;
+	}
 	else if (ft_strchr(pf->list_types, pf->input[i]))
 	{
 		pf->type = pf->input[i];

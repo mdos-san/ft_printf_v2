@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:10 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/20 09:09:11 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/20 09:31:38 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_pf	pf_init(char *str, va_list ap)
 	pf.precision = 0;
 	pf.list_flags = "+ -0#";
 	pf.list_types = "cCsSdDiuUoOxXp";
+	pf.list_mod = "lhjz";
 	va_copy(pf.arg, ap);
 	return (pf);
 }
