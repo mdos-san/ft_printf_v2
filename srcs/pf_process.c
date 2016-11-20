@@ -115,6 +115,8 @@ void	pf_process(t_pf *pf)
 		if (s[0] == '\0')
 			pf_buffer_add_null(pf);
 	}
+	if (pf->type == 'C')
+		s = (get_wchar(va_arg(pf->arg, int)));
 	if (pf->type == 's')
 	{
 		s = ft_strdup(va_arg(pf->arg, char *));
@@ -126,23 +128,23 @@ void	pf_process(t_pf *pf)
 			: ft_itoa_base(va_arg(pf->arg, long), 10);
 	if (pf->type == 'u' || pf->type == 'U')
 		s = (pf->type == 'u')
-			? ft_uitoa_base(va_arg(pf->arg, unsigned int), 10)
-			: ft_uitoa_base(va_arg(pf->arg, unsigned long), 10);
+			? ft_uitoa_base(va_arg(pf->arg, unsigned int), 10, 0)
+			: ft_uitoa_base(va_arg(pf->arg, unsigned long), 10, 0);
 	if (pf->type == 'o' || pf->type == 'O')
 		s = (pf->type == 'o')
-			? ft_uitoa_base(va_arg(pf->arg, unsigned int), 8)
-			: ft_uitoa_base(va_arg(pf->arg, unsigned long), 8);
+			? ft_uitoa_base(va_arg(pf->arg, unsigned int), 8, 0)
+			: ft_uitoa_base(va_arg(pf->arg, unsigned long), 8, 0);
 	if (pf->type == 'x' || pf->type == 'X')
-		s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 16);
+		s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 16, ((pf->type == 'x') ? 0 : 1));
 	if (pf->type == 'p')
 	{
-		tmp_str = ft_uitoa_base(va_arg(pf->arg, unsigned long long), 16);
+		tmp_str = ft_uitoa_base(va_arg(pf->arg, unsigned long long), 16, 0);
 		s = ft_strjoin("0x", tmp_str);
 		ft_strdel(&tmp_str);
 	}
 	flag(pf, &s);
 	precision(pf, &s);
 	(pf->f_minus == 0) ? width(pf, s) : 0;
-	pf_buffer_add(pf, s);
+	(pf->type != 'C') ? pf_buffer_add(pf, s) : pf_buffer_nadd(pf, s, ft_strlen(s));
 	(pf->f_minus == 1) ? width(pf, s) : 0;
 }

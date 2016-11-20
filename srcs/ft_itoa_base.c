@@ -30,7 +30,7 @@ char	*ft_itoa_base(long long nbr, unsigned int base)
 	return (ft_strdup(buf + 1022 - i + 1));
 }
 
-char	*ft_uitoa_base(unsigned long long nbr, unsigned int base)
+char	*ft_uitoa_base(unsigned long long nbr, unsigned int base, int up)
 {
 	int					i;
 	unsigned long long	mod;
@@ -48,7 +48,7 @@ char	*ft_uitoa_base(unsigned long long nbr, unsigned int base)
 		else
 		{
 			mod -= 10;
-			buf[1022 - i] = mod + 97;
+			buf[1022 - i] = mod + 97 - (up * 32);
 		}
 		nbr /= base;
 		++i;

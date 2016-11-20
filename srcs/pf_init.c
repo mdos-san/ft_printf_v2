@@ -11,7 +11,7 @@ t_pf	pf_init(char *str, va_list ap)
 	pf.width = 0;
 	pf.precision = 0;
 	pf.list_flags = "+ -0#";
-	pf.list_types = "csdDiuUoOxXp";
+	pf.list_types = "cCsdDiuUoOxXp";
 	va_copy(pf.arg, ap);
 	return (pf);
 }

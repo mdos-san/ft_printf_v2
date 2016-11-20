@@ -26,20 +26,45 @@ void	pf_buffer_add(t_pf *pf, char *str)
 
 void	pf_buffer_add_null(t_pf *pf)
 {
+	if (pf->index == PF_BUFFER)
+	{
+		write(1, pf->buffer, PF_BUFFER);
+		pf->index = 0;
+		++pf->number_buffer;
+	}
+	if (1 + pf->index <= PF_BUFFER)
+	{
+		ft_strcpy(pf->buffer + pf->index, "\0");
+		pf->index += 1;
+	}
+	else
+	{
+		pf->buffer[pf->index] = '\0';
+		++pf->index;
+	}
+}
+
+void	pf_buffer_nadd(t_pf *pf, char *str, int n)
+{
+	static int	index = 0;
+
+	if (index < n)
+	{
 		if (pf->index == PF_BUFFER)
 		{
 			write(1, pf->buffer, PF_BUFFER);
 			pf->index = 0;
 			++pf->number_buffer;
-		}
-		if (1 + pf->index <= PF_BUFFER)
-		{
-			ft_strcpy(pf->buffer + pf->index, "\0");
-			pf->index += 1;
+			pf_buffer_nadd(pf, str, n);
 		}
 		else
 		{
-			pf->buffer[pf->index] = '\0';
+			pf->buffer[pf->index] = str[index];
 			++pf->index;
+			++index;
+			pf_buffer_nadd(pf, str, n);
 		}
+	}
+	else
+		index = 0;
 }
