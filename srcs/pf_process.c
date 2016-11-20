@@ -95,7 +95,8 @@ static void	width(t_pf *pf, char *s)
 {
 	char	*w;
 
-	pf->width = pf->width - ft_strlen(s);
+	pf->width = ((int)pf->width - (int)ft_strlen(s) > 0)
+		? pf->width - ft_strlen(s)  : 0;
 	w = ft_strnew(pf->width);
 	ft_memset(w, ' ', pf->width);
 	pf_buffer_add(pf, w);
