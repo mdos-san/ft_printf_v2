@@ -65,6 +65,8 @@ void	pf_buffer_nadd(t_pf *pf, char *str, int n)
 			pf_buffer_nadd(pf, str, n);
 		}
 	}
+	if (index == 0 && n == 0)
+		pf_buffer_add_null(pf);
 	else
 		index = 0;
 }
