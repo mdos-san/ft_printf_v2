@@ -122,6 +122,8 @@ void	pf_process(t_pf *pf)
 		s = ft_strdup(va_arg(pf->arg, char *));
 		s = (s == NULL) ? ft_strdup("(null)") : s;
 	}
+	if (pf->type == 'S')
+		s = get_wstr(va_arg(pf->arg, int *));
 	if (pf->type == 'd' || pf->type == 'D' || pf->type == 'i')
 		s = (pf->type == 'd' || pf->type == 'i')
 			? ft_itoa_base(va_arg(pf->arg, int), 10)

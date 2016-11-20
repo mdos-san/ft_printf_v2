@@ -62,5 +62,6 @@ void	pf_buffer_nadd(t_pf *pf, char *str, int n);
 char	*ft_itoa_base(long long nbr, unsigned int base);
 char	*ft_uitoa_base(unsigned long long nbr, unsigned int base, int up);
 char	*get_wchar(int c);
+char	*get_wstr(int *istr);
 
 #endif
