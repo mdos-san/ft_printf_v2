@@ -118,16 +118,21 @@ void	pf_process(t_pf *pf)
 	if (pf->type == 's')
 	{
 		s = ft_strdup(va_arg(pf->arg, char *));
-		if (s == NULL)
-			s = ft_strdup("(null)");
+		s = (s == NULL) ? ft_strdup("(null)") : s;
 	}
-	if (pf->type == 'd' || pf->type == 'i')
-		s = ft_itoa_base(va_arg(pf->arg, int), 10);
-	if (pf->type == 'u')
-		s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 10);
-	if (pf->type == 'o')
-		s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 8);
-	if (pf->type == 'x')
+	if (pf->type == 'd' || pf->type == 'D' || pf->type == 'i')
+		s = (pf->type == 'd' || pf->type == 'i')
+			? ft_itoa_base(va_arg(pf->arg, int), 10)
+			: ft_itoa_base(va_arg(pf->arg, long), 10);
+	if (pf->type == 'u' || pf->type == 'U')
+		s = (pf->type == 'u')
+			? ft_uitoa_base(va_arg(pf->arg, unsigned int), 10)
+			: ft_uitoa_base(va_arg(pf->arg, unsigned long), 10);
+	if (pf->type == 'o' || pf->type == 'O')
+		s = (pf->type == 'o')
+			? ft_uitoa_base(va_arg(pf->arg, unsigned int), 8)
+			: ft_uitoa_base(va_arg(pf->arg, unsigned long), 8);
+	if (pf->type == 'x' || pf->type == 'X')
 		s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 16);
 	if (pf->type == 'p')
 	{

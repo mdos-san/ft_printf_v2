@@ -5,7 +5,7 @@ char	*ft_itoa_base(long long nbr, unsigned int base)
 	int			i;
 	long long	mod;
 	char		buf[1024];
-	int			neg;
+	long long	neg;
 
 	i = 0;
 	ft_bzero(buf, 1024);
