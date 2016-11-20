@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/20 09:41:38 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/20 10:07:18 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,12 @@ void	pf_process(t_pf *pf)
 	{
 		if (pf->mod_l)
 			s = ft_itoa_base(va_arg(pf->arg, long), 10);
+		else if (pf->mod_h == 2 && (pf->type == 'd' || pf->type == 'i'))
+			s = ft_itoa_base((char)va_arg(pf->arg, int), 10);
+		else if (pf->mod_j == 1)
+			s = ft_itoa_base(va_arg(pf->arg, intmax_t), 10);
+		else if (pf->mod_z == 1)
+			s = ft_itoa_base(va_arg(pf->arg, size_t), 10);
 		else
 			s = (pf->type == 'd' || pf->type == 'i')
 				? ft_itoa_base(va_arg(pf->arg, int), 10)
@@ -159,6 +165,14 @@ void	pf_process(t_pf *pf)
 	{
 		if (pf->mod_l)
 			s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 10, 0);
+		else if (pf->mod_h == 2 && pf->type == 'u')
+			s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int), 10, 0);
+		else if (pf->mod_h == 2 && pf->type == 'U')
+			s = ft_uitoa_base((unsigned short)va_arg(pf->arg, unsigned int), 10, 0);
+		else if (pf->mod_z == 1)
+			s = ft_uitoa_base(va_arg(pf->arg, size_t), 10, 0);
+		else if (pf->mod_j == 1)
+			s = ft_uitoa_base(va_arg(pf->arg, uintmax_t), 10, 0);
 		else
 			s = (pf->type == 'u')
 				? ft_uitoa_base(va_arg(pf->arg, unsigned int), 10, 0)
@@ -168,6 +182,14 @@ void	pf_process(t_pf *pf)
 	{
 		if (pf->mod_l)
 			s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 8, 0);
+		else if (pf->mod_h == 2 && pf->type == 'o')
+			s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int), 8, 0);
+		else if (pf->mod_h == 2 && pf->type == 'O')
+			s = ft_uitoa_base((unsigned short)va_arg(pf->arg, unsigned int), 8, 0);
+		else if (pf->mod_z == 1)
+			s = ft_uitoa_base(va_arg(pf->arg, size_t), 8, 0);
+		else if (pf->mod_j == 1)
+			s = ft_uitoa_base(va_arg(pf->arg, uintmax_t), 8, 0);
 		else
 			s = (pf->type == 'o')
 				? ft_uitoa_base(va_arg(pf->arg, unsigned int), 8, 0)
@@ -177,6 +199,12 @@ void	pf_process(t_pf *pf)
 	{
 		if (pf->mod_l)
 			s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 16, ((pf->type == 'x') ? 0 : 1));
+		else if (pf->mod_h == 2)
+			s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int), 16, ((pf->type == 'x') ? 0 : 1));
+		else if (pf->mod_z)
+			s = ft_uitoa_base(va_arg(pf->arg, size_t), 16, ((pf->type == 'x') ? 0 : 1));
+		else if (pf->mod_j)
+			s = ft_uitoa_base(va_arg(pf->arg, uintmax_t), 16, ((pf->type == 'x') ? 0 : 1));
 		else
 			s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 16, ((pf->type == 'x') ? 0 : 1));
 	}
