@@ -112,6 +112,8 @@ void	pf_process(t_pf *pf)
 	{
 		s = ft_strnew(1);
 		s[0] = (char)va_arg(pf->arg, int);
+		if (s[0] == '\0')
+			pf_buffer_add_null(pf);
 	}
 	if (pf->type == 's')
 	{
