@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:25 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/21 12:28:47 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/21 13:02:01 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,21 @@ static void	out(t_pf *pf, unsigned int i)
 
 static void	go_out(t_pf *pf, unsigned int i)
 {
+	char	s[2];
+
+	s[1] = 0;
 	pf->status = STATUS_OUT;
-	pf->buffer[pf->index] = pf->input[i];
-	++pf->index;
 	if (pf->index == PF_BUFFER)
 	{
 		write(1, pf->buffer, PF_BUFFER);
 		pf->index = 0;
 		++pf->number_buffer;
 	}
+	s[0] = pf->input[i];
+	(!pf->f_minus) ? width(pf, s) : 0;
+	pf->buffer[pf->index] = pf->input[i];
+	++pf->index;
+	(pf->f_minus) ? width(pf, s) : 0;
 }
 
 static void	flag_init(t_pf *pf)

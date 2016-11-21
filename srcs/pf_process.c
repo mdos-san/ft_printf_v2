@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/21 12:36:44 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/21 12:53:29 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,16 @@ static void	precision(t_pf *pf, char **s)
 	pf->precision = 0;
 }
 
-static void	width(t_pf *pf, char *s)
+void		width(t_pf *pf, char *s)
 {
 	char	*w;
 
-	pf->width = ((int)pf->width - (int)ft_strlen(s) > 0)
-		? pf->width - ft_strlen(s)  : 0;
+	if (pf->type == 'c' && ft_strlen(s) == 0)
+		pf->width = ((int)pf->width - 1 > 0)
+			? pf->width - 1  : 0;
+	else
+		pf->width = ((int)pf->width - (int)ft_strlen(s) > 0)
+			? pf->width - ft_strlen(s)  : 0;
 	w = ft_strnew(pf->width);
 	if (pf->f_zero == 1 && pf->f_minus == 0)
 		ft_memset(w, '0', pf->width);
@@ -149,7 +153,10 @@ void	pf_process(t_pf *pf)
 			s = ft_strnew(1);
 			s[0] = (char)va_arg(pf->arg, int);
 			if (s[0] == '\0')
+			{
+				width(pf, s);
 				pf_buffer_add_null(pf);
+			}
 		}
 	}
 	if (pf->type == 'C')
@@ -202,6 +209,8 @@ void	pf_process(t_pf *pf)
 	{
 		if (pf->mod_l)
 			s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 8, 0);
+		else if (pf->mod_h == 1 && pf->type == 'o')
+			s = ft_uitoa_base((unsigned short)va_arg(pf->arg, unsigned int), 8, 0);
 		else if (pf->mod_h == 2 && pf->type == 'o')
 			s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int), 8, 0);
 		else if (pf->mod_h == 2 && pf->type == 'O')
@@ -236,7 +245,10 @@ void	pf_process(t_pf *pf)
 	}
 	flag(pf, &s);
 	precision(pf, &s);
-	(pf->f_minus == 0) ? width(pf, s) : 0;
-	(pf->type != 'C') ? pf_buffer_add(pf, s) : pf_buffer_nadd(pf, s, ft_strlen(s));
-	(pf->f_minus == 1) ? width(pf, s) : 0;
+	if (pf->type != 'c' || s[0])
+	{
+		(pf->f_minus == 0) ? width(pf, s) : 0;
+		(pf->type != 'C') ? pf_buffer_add(pf, s) : pf_buffer_nadd(pf, s, ft_strlen(s));
+		(pf->f_minus == 1) ? width(pf, s) : 0;
+	}
 }

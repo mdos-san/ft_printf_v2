@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:13:54 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/21 12:28:16 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/21 12:53:41 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ char				*ft_uitoa_base
 						(unsigned long long nbr, unsigned int base, int up);
 char				*get_wchar(int c);
 char				*get_wstr(int *istr);
+void				width(t_pf *pf, char *s);
 
 #endif

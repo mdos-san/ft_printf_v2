@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:10 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/20 09:31:38 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/21 12:42:29 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ t_pf	pf_init(char *str, va_list ap)
 	pf.index = 0;
 	pf.number_buffer = 0;
 	pf.status = 0;
+	pf.width = 0;
+	pf.precision = 0;
+	pf.f_zero = 0;
 	pf.width = 0;
 	pf.precision = 0;
 	pf.list_flags = "+ -0#";
