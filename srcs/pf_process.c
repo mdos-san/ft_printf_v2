@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/21 12:53:29 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/21 13:12:10 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,20 @@ static void	precision(t_pf *pf, char **s)
 		if (pf->status == STATUS_P_END && pf->precision == 0)
 			(*s)[0] = '\0';
 	}
-	else if (pf->type == 'p' && pf->precision > length - 2)
+	else if (pf->type == 'p')
 	{
-		str = ft_strnew(pf->precision + 2);
-		ft_memset(str, '0', pf->precision + 2);
-		str[0] = '0';
-		str[1] = 'x';
-		str[pf->precision - length + 4] = 0;
-		*s = ft_strjoin(str, *s + 2);
+
+		if (pf->p_given && pf->precision == 0 && ft_strcmp(*s, "0x0") == 0)
+			(*s)[2] = 0;
+		else if (pf->precision > length - 2)
+		{
+			str = ft_strnew(pf->precision + 2);
+			ft_memset(str, '0', pf->precision + 2);
+			str[0] = '0';
+			str[1] = 'x';
+			str[pf->precision - length + 4] = 0;
+			*s = ft_strjoin(str, *s + 2);
+		}
 	}
 	else if ((pf->type == 'd' || pf->type == 'D' || pf->type == 'i'))
 	{
