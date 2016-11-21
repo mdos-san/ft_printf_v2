@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/21 12:19:51 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/21 12:36:44 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	precision(t_pf *pf, char **s)
 		str[pf->precision - length + 4] = 0;
 		*s = ft_strjoin(str, *s + 2);
 	}
-	else if ((pf->type == 'd' || pf->type == 'i'))
+	else if ((pf->type == 'd' || pf->type == 'D' || pf->type == 'i'))
 	{
 		if (pf->precision >= length)
 		{
@@ -77,22 +77,38 @@ static void	precision(t_pf *pf, char **s)
 		else if (pf->status == STATUS_P_END && pf->precision == 0 && ft_strcmp("0", *s) == 0)
 			(*s)[0] = '\0';
 	}
-	else if (pf->type == 'x')
+	else if (pf->type == 'u' || pf->type == 'o' || pf->type == 'O')
 	{
-		if (pf->f_sharp && pf->precision > length - 2)
-		{
-			str = ft_strnew(pf->precision + 2);
-			ft_memset(str, '0', pf->precision + 2);
-			str[0] = '0';
-			str[1] = 'x';
-			str[pf->precision - length + 4] = 0;
-			*s = ft_strjoin(str, *s + 2);
-		}
+		if (pf->p_given && pf->precision == 0 && ft_strcmp(*s, "0") == 0)
+			*s[0] = 0;
 		else
 		{
 			str = ft_strnew(pf->precision);
 			ft_memset(str, '0', pf->precision);
 			*s = ft_strjoin(str + length, *s);
+		}
+	}
+	else if (pf->type == 'x' || pf->type == 'X')
+	{
+		if (pf->p_given && pf->precision == 0 && ft_strcmp(*s, "0") == 0)
+			*s[0] = 0;
+		else
+		{
+			if (pf->f_sharp && pf->precision > length - 2)
+			{
+				str = ft_strnew(pf->precision + 2);
+				ft_memset(str, '0', pf->precision + 2);
+				str[0] = '0';
+				str[1] = pf->type;
+				str[pf->precision - length + 4] = 0;
+				*s = ft_strjoin(str, *s + 2);
+			}
+			else
+			{
+				str = ft_strnew(pf->precision);
+				ft_memset(str, '0', pf->precision);
+				*s = ft_strjoin(str + length, *s);
+			}
 		}
 	}
 	else if (pf->precision > length)

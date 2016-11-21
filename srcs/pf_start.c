@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:25 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/20 09:53:14 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/21 12:28:47 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	go_out(t_pf *pf, unsigned int i)
 
 static void	flag_init(t_pf *pf)
 {
+	pf->p_given = 0;
 	pf->f_plus = 0;
 	pf->f_space = 0;
 	pf->f_minus = 0;
@@ -85,6 +86,7 @@ static void	in(t_pf *pf, unsigned int i)
 	else if (pf->status < STATUS_P && pf->input[i] == '.')
 	{
 		pf->status = STATUS_P;
+		pf->p_given = 1;
 		if (pf->input[i + 1] != '*' && !ft_isdigit(pf->input[i + 1]))
 			pf->status = STATUS_P_END;
 	}
