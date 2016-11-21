@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/20 10:07:18 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/21 12:19:51 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,17 @@ static void	flag(t_pf *pf, char **s)
 		if (pf->f_space == 1 && (*s)[0] != '-')
 			(*s) = ft_strjoin(" ", *s);
 	}
-	if (pf->type == 'o')
+	if (pf->type == 'o' || pf->type == 'O')
 	{
 		if (pf->f_sharp && ft_strcmp("0", *s) != 0)
 			*s = ft_strjoin("0", *s);
 	}
 	if (pf->type == 'x')
-	{
 		if (pf->f_sharp && ft_strcmp("0", *s) != 0)
 			*s = ft_strjoin("0x", *s);
-	}
+	if (pf->type == 'X')
+		if (pf->f_sharp && ft_strcmp("0", *s) != 0)
+			*s = ft_strjoin("0X", *s);
 }
 
 static void	precision(t_pf *pf, char **s)
@@ -110,7 +111,10 @@ static void	width(t_pf *pf, char *s)
 	pf->width = ((int)pf->width - (int)ft_strlen(s) > 0)
 		? pf->width - ft_strlen(s)  : 0;
 	w = ft_strnew(pf->width);
-	ft_memset(w, ' ', pf->width);
+	if (pf->f_zero == 1 && pf->f_minus == 0)
+		ft_memset(w, '0', pf->width);
+	else
+		ft_memset(w, ' ', pf->width);
 	pf_buffer_add(pf, w);
 	pf->width = 0;
 }
