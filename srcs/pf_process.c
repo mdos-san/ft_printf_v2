@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/21 13:12:10 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/21 13:19:57 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	precision(t_pf *pf, char **s)
 	char			*str;
 
 	length = ft_strlen(*s);
-	if (pf->type == 's')
+	if (pf->type == 's' || pf->type == 'S')
 	{
 		if (0 < pf->precision && pf->precision < length)
 			(*s)[pf->precision] = '\0';
@@ -250,7 +250,8 @@ void	pf_process(t_pf *pf)
 		ft_strdel(&tmp_str);
 	}
 	flag(pf, &s);
-	precision(pf, &s);
+	if (pf->type != 'c')
+		precision(pf, &s);
 	if (pf->type != 'c' || s[0])
 	{
 		(pf->f_minus == 0) ? width(pf, s) : 0;
