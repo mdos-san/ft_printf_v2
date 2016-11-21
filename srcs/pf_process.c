@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/21 13:36:10 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/21 13:56:53 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,10 @@ void		width(t_pf *pf, char *s)
 		ft_memset(w, ' ', pf->width);
 	if (pf->f_zero && (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
 		pf_buffer_add(pf, "-");
+	if (pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
+		pf_buffer_add(pf, "+");
+	if (pf->f_space && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
+		pf_buffer_add(pf, " ");
 	if (pf->f_zero && pf->type == 'p')
 		pf_buffer_add(pf, "0x");
 	pf_buffer_add(pf, w);
@@ -260,6 +264,10 @@ void	pf_process(t_pf *pf)
 	{
 		(pf->f_minus == 0) ? width(pf, s) : 0;
 		if (pf->f_zero && (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
+			pf_buffer_add(pf, s + 1);
+		else if (pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
+			pf_buffer_add(pf, s + 1);
+		else if (pf->f_space && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
 			pf_buffer_add(pf, s + 1);
 		else if (pf->f_zero && pf->type == 'p')
 			pf_buffer_add(pf, s + 2);
