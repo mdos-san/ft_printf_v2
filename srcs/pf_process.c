@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/21 13:56:53 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/22 15:25:14 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void	precision(t_pf *pf, char **s)
 	}
 	else if (pf->type == 'u' || pf->type == 'o' || pf->type == 'O')
 	{
-		if (pf->p_given && pf->precision == 0 && ft_strcmp(*s, "0") == 0)
+		if (pf->p_given && pf->precision == 0 && ft_strcmp(*s, "0") == 0 && !pf->f_sharp)
 			*s[0] = 0;
 		else
 		{
