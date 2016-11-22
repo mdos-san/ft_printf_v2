@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/22 15:25:14 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/22 15:36:33 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,10 +137,23 @@ void		width(t_pf *pf, char *s)
 		pf->width = ((int)pf->width - (int)ft_strlen(s) > 0)
 			? pf->width - ft_strlen(s)  : 0;
 	w = ft_strnew(pf->width);
-	if (pf->f_zero == 1 && pf->f_minus == 0)
+	if (pf->type == 'd' || pf->type == 'D' || pf->type == 'i')
+	{
+		if (pf->p_given && pf->precision < pf->width)
+				ft_memset(w, ' ', pf->width);
+		else
+		{
+			if (pf->f_zero == 1 && pf->f_minus == 0)
+				ft_memset(w, '0', pf->width);
+			else
+				ft_memset(w, ' ', pf->width);
+		}
+	}
+	else if (pf->f_zero == 1 && pf->f_minus == 0)
 		ft_memset(w, '0', pf->width);
 	else
 		ft_memset(w, ' ', pf->width);
+
 	if (pf->f_zero && (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
 		pf_buffer_add(pf, "-");
 	if (pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
