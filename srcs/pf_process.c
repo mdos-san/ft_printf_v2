@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/26 14:51:59 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/26 16:36:43 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,14 @@ static void	precision(t_pf *pf, char **s)
 	{
 		if (pf->precision >= length)
 		{
+			if ((*s)[0] == ' ' || (*s)[0] == '+')
+				(*s)[0] = '0';
 			if ((*s)[0] != '-')
 			{
 				str = ft_strnew(pf->precision);
 				ft_memset(str, '0', pf->precision);
-				*s = ft_strjoin(str + length, *s);
+				str[pf->precision - length] = 0;
+				*s = ft_strjoin(str, *s);
 			}
 			else
 			{
@@ -79,6 +82,10 @@ static void	precision(t_pf *pf, char **s)
 				str[length] = '-';
 				*s = ft_strjoin(str + length, *s + 1);
 			}
+			if (pf->f_plus)
+				*s = ft_strjoin("+", *s);
+			if (pf->f_space)
+				*s = ft_strjoin(" ", *s);
 		}
 		else if (pf->status == STATUS_P_END && pf->precision == 0 && ft_strcmp("0", *s) == 0)
 			(*s)[0] = '\0';
@@ -153,16 +160,18 @@ void		width(t_pf *pf, char *s)
 		ft_memset(w, '0', pf->width);
 	else
 		ft_memset(w, ' ', pf->width);
-	if (pf->f_zero && (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
-		pf_buffer_add(pf, "-");
-	if (pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
-		pf_buffer_add(pf, "+");
-	if (pf->f_space && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
+	if (pf->f_space && pf->f_zero && (pf->type == 'd' || pf->type == 'D') && s[0] == ' ')
 		pf_buffer_add(pf, " ");
+	if (pf->f_zero && pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] == '+')
+		pf_buffer_add(pf, "+");
+	if (pf->f_zero && !pf->f_minus && (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
+		pf_buffer_add(pf, "-");
 	if (pf->f_zero && pf->type == 'p')
 		pf_buffer_add(pf, "0x");
 	if (pf->f_sharp && pf->f_zero && !pf->f_minus && pf->type == 'x')
 		pf_buffer_add(pf, "0x");
+	if (pf->f_sharp && pf->f_zero && !pf->f_minus && pf->type == 'X')
+		pf_buffer_add(pf, "0X");
 	pf_buffer_add(pf, w);
 	pf->width = 0;
 }
@@ -279,13 +288,17 @@ void	pf_process(t_pf *pf)
 	if (pf->type != 'c' || s[0])
 	{
 		(pf->f_minus == 0) ? width(pf, s) : 0;
-		if (pf->f_zero && (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
+		if (pf->f_zero && !pf->f_minus && (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
 			pf_buffer_add(pf, s + 1);
-		else if (pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
+		else if (pf->f_zero && pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] == '+')
 			pf_buffer_add(pf, s + 1);
-		else if (pf->f_space && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
+		else if (pf->f_space && pf->f_zero && (pf->type == 'd' || pf->type == 'D') && s[0] == ' ')
 			pf_buffer_add(pf, s + 1);
-		else if (!pf->f_minus && pf->f_sharp && pf->f_zero && pf->type == 'x')
+//		else if (pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] == '+')
+//			pf_buffer_add(pf, s + 1);
+//		else if (pf->f_space && (pf->type == 'd' || pf->type == 'D') && s[0] == ' ')
+//			pf_buffer_add(pf, s + 1);
+		else if (!pf->f_minus && pf->f_sharp && pf->f_zero && (pf->type == 'x' || pf->type == 'X'))
 			pf_buffer_add(pf, s + 2);
 		else if (pf->f_zero && pf->type == 'p')
 			pf_buffer_add(pf, s + 2);
