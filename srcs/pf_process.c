@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/26 16:36:43 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/26 18:00:37 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,12 @@ static void	precision(t_pf *pf, char **s)
 	else if (pf->type == 'u' || pf->type == 'o' || pf->type == 'O')
 	{
 		if (pf->p_given && pf->precision == 0 && ft_strcmp(*s, "0") == 0 && !pf->f_sharp)
-				(*s)[0] = 0;
+			(*s)[0] = 0;
 		else if (pf->precision > length)
 		{
-				str = ft_strnew(pf->precision);
-				ft_memset(str, '0', pf->precision);
-				*s = ft_strjoin(str + length, *s);
+			str = ft_strnew(pf->precision);
+			ft_memset(str, '0', pf->precision);
+			*s = ft_strjoin(str + length, *s);
 		}
 	}
 	else if (pf->type == 'x' || pf->type == 'X')
@@ -176,10 +176,36 @@ void		width(t_pf *pf, char *s)
 	pf->width = 0;
 }
 
+static	int is_dioupx(char c)
+{
+	if (c == 'd' || c == 'D' || c == 'i' || c == 'u' || c == 'U' || c == 'o' ||
+		c == 'O' || c == 'x' || c == 'X' ||c == 'p')
+		return (1);
+	return (0);
+}
+
+static	void get_offset(t_pf *pf, char *s)
+{
+	pf->offset = 0;
+	if (pf->f_zero && !pf->f_minus 
+			&& (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
+		pf->offset = 1;
+	else if (pf->f_zero && pf->f_plus
+			&& (pf->type == 'd' || pf->type == 'D') && s[0] == '+')
+		pf->offset = 1;
+	else if (pf->f_space && pf->f_zero
+			&& (pf->type == 'd' || pf->type == 'D') && s[0] == ' ')
+		pf->offset = 1;
+	else if (!pf->f_minus && pf->f_sharp
+			&& pf->f_zero && (pf->type == 'x' || pf->type == 'X'))
+		pf->offset = 2;
+	else if (pf->f_zero && pf->type == 'p')
+		pf->offset = 2;
+}
+
 void	pf_process(t_pf *pf)
 {
 	char	*s;
-	char	*tmp_str;
 
 	if (pf->type == 'c')
 	{
@@ -210,100 +236,14 @@ void	pf_process(t_pf *pf)
 	}
 	if (pf->type == 'S')
 		s = get_wstr(va_arg(pf->arg, int *), pf->precision);
-	if (pf->type == 'd' || pf->type == 'D' || pf->type == 'i')
-	{
-		if (pf->mod_l)
-			s = ft_itoa_base(va_arg(pf->arg, long), 10);
-		else if (pf->mod_h == 1 && (pf->type == 'd' || pf->type == 'i'))
-			s = ft_itoa_base((short)va_arg(pf->arg, int), 10);
-		else if (pf->mod_h == 2 && (pf->type == 'd' || pf->type == 'i'))
-			s = ft_itoa_base((char)va_arg(pf->arg, int), 10);
-		else if (pf->mod_j == 1)
-			s = ft_itoa_base(va_arg(pf->arg, intmax_t), 10);
-		else if (pf->mod_z == 1)
-			s = ft_itoa_base(va_arg(pf->arg, size_t), 10);
-		else
-			s = (pf->type == 'd' || pf->type == 'i')
-				? ft_itoa_base(va_arg(pf->arg, int), 10)
-				: ft_itoa_base(va_arg(pf->arg, long), 10);
-	}
-	if (pf->type == 'u' || pf->type == 'U')
-	{
-		if (pf->mod_l)
-			s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 10, 0);
-		else if (pf->mod_h == 2 && pf->type == 'u')
-			s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int), 10, 0);
-		else if (pf->mod_h == 2 && pf->type == 'U')
-			s = ft_uitoa_base((unsigned short)va_arg(pf->arg, unsigned int), 10, 0);
-		else if (pf->mod_z == 1)
-			s = ft_uitoa_base(va_arg(pf->arg, size_t), 10, 0);
-		else if (pf->mod_j == 1)
-			s = ft_uitoa_base(va_arg(pf->arg, uintmax_t), 10, 0);
-		else
-			s = (pf->type == 'u')
-				? ft_uitoa_base(va_arg(pf->arg, unsigned int), 10, 0)
-				: ft_uitoa_base(va_arg(pf->arg, unsigned long), 10, 0);
-	}
-	if (pf->type == 'o' || pf->type == 'O')
-	{
-		if (pf->mod_l)
-			s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 8, 0);
-		else if (pf->mod_h == 1 && pf->type == 'o')
-			s = ft_uitoa_base((unsigned short)va_arg(pf->arg, unsigned int), 8, 0);
-		else if (pf->mod_h == 2 && pf->type == 'o')
-			s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int), 8, 0);
-		else if (pf->mod_h == 2 && pf->type == 'O')
-			s = ft_uitoa_base((unsigned short)va_arg(pf->arg, unsigned int), 8, 0);
-		else if (pf->mod_z == 1)
-			s = ft_uitoa_base(va_arg(pf->arg, size_t), 8, 0);
-		else if (pf->mod_j == 1)
-			s = ft_uitoa_base(va_arg(pf->arg, uintmax_t), 8, 0);
-		else
-			s = (pf->type == 'o')
-				? ft_uitoa_base(va_arg(pf->arg, unsigned int), 8, 0)
-				: ft_uitoa_base(va_arg(pf->arg, unsigned long), 8, 0);
-	}
-	if (pf->type == 'x' || pf->type == 'X')
-	{
-		if (pf->mod_l)
-			s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 16, ((pf->type == 'x') ? 0 : 1));
-		else if (pf->mod_h == 2)
-			s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int), 16, ((pf->type == 'x') ? 0 : 1));
-		else if (pf->mod_z)
-			s = ft_uitoa_base(va_arg(pf->arg, size_t), 16, ((pf->type == 'x') ? 0 : 1));
-		else if (pf->mod_j)
-			s = ft_uitoa_base(va_arg(pf->arg, uintmax_t), 16, ((pf->type == 'x') ? 0 : 1));
-		else
-			s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 16, ((pf->type == 'x') ? 0 : 1));
-	}
-	if (pf->type == 'p')
-	{
-		tmp_str = ft_uitoa_base(va_arg(pf->arg, unsigned long long), 16, 0);
-		s = ft_strjoin("0x", tmp_str);
-		ft_strdel(&tmp_str);
-	}
+	(is_dioupx(pf->type)) ? va_get(pf, &s) : 0;
 	flag(pf, &s);
-	if (pf->type != 'c')
-		precision(pf, &s);
+	(pf->type != 'c') ? precision(pf, &s) : 0;
 	if (pf->type != 'c' || s[0])
 	{
 		(pf->f_minus == 0) ? width(pf, s) : 0;
-		if (pf->f_zero && !pf->f_minus && (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
-			pf_buffer_add(pf, s + 1);
-		else if (pf->f_zero && pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] == '+')
-			pf_buffer_add(pf, s + 1);
-		else if (pf->f_space && pf->f_zero && (pf->type == 'd' || pf->type == 'D') && s[0] == ' ')
-			pf_buffer_add(pf, s + 1);
-//		else if (pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] == '+')
-//			pf_buffer_add(pf, s + 1);
-//		else if (pf->f_space && (pf->type == 'd' || pf->type == 'D') && s[0] == ' ')
-//			pf_buffer_add(pf, s + 1);
-		else if (!pf->f_minus && pf->f_sharp && pf->f_zero && (pf->type == 'x' || pf->type == 'X'))
-			pf_buffer_add(pf, s + 2);
-		else if (pf->f_zero && pf->type == 'p')
-			pf_buffer_add(pf, s + 2);
-		else
-			(pf->type != 'C') ? pf_buffer_add(pf, s) : pf_buffer_nadd(pf, s, ft_strlen(s));
+		get_offset(pf, s);
+		(pf->type != 'C') ? pf_buffer_add(pf, s + pf->offset) : pf_buffer_nadd(pf, s, ft_strlen(s));
 		(pf->f_minus == 1) ? width(pf, s) : 0;
 	}
 }

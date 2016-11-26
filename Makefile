@@ -6,7 +6,7 @@
 #    By: mdos-san <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 12:59:09 by mdos-san          #+#    #+#              #
-#    Updated: 2016/11/20 09:02:38 by mdos-san         ###   ########.fr        #
+#    Updated: 2016/11/26 17:44:12 by mdos-san         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ TMP_C_2 = \
 			pf_buffer_add.c\
 			ft_itoa_base.c\
 			get_wchar.c\
-			get_wstr.c
+			get_wstr.c\
+			va_get.c
 SRC_C_2=$(TMP_C_2:%=srcs/%)
 SRC_O_2=$(SRC_C_2:.c=.o)
 DEL_2=$(TMP_C_2:.c=.o)
