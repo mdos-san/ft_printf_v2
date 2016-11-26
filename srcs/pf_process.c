@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/26 18:00:37 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/26 18:37:24 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,37 +203,42 @@ static	void get_offset(t_pf *pf, char *s)
 		pf->offset = 2;
 }
 
-void	pf_process(t_pf *pf)
+static	void check_cs(t_pf *pf, char **s)
 {
-	char	*s;
-
 	if (pf->type == 'c')
 	{
 		if (pf->mod_l)
 			pf->type = 'C';
 		else
 		{
-			s = ft_strnew(1);
-			s[0] = (char)va_arg(pf->arg, int);
-			if (s[0] == '\0')
+			*s = ft_strnew(1);
+			(*s)[0] = (char)va_arg(pf->arg, int);
+			if ((*s)[0] == '\0')
 			{
-				width(pf, s);
+				width(pf,*s);
 				pf_buffer_add_null(pf);
 			}
 		}
 	}
-	if (pf->type == 'C')
-		s = (get_wchar(va_arg(pf->arg, int)));
 	if (pf->type == 's')
 	{
 		if (pf->mod_l)
 			pf->type = 'S';
 		else
 		{
-			s = ft_strdup(va_arg(pf->arg, char *));
-			s = (s == NULL) ? ft_strdup("(null)") : s;
+			*s = ft_strdup(va_arg(pf->arg, char *));
+			*s = (*s == NULL) ? ft_strdup("(null)") : *s;
 		}
 	}
+}
+
+void	pf_process(t_pf *pf)
+{
+	char	*s;
+
+	check_cs(pf, &s);
+	if (pf->type == 'C')
+		s = (get_wchar(va_arg(pf->arg, int)));
 	if (pf->type == 'S')
 		s = get_wstr(va_arg(pf->arg, int *), pf->precision);
 	(is_dioupx(pf->type)) ? va_get(pf, &s) : 0;
@@ -243,7 +248,8 @@ void	pf_process(t_pf *pf)
 	{
 		(pf->f_minus == 0) ? width(pf, s) : 0;
 		get_offset(pf, s);
-		(pf->type != 'C') ? pf_buffer_add(pf, s + pf->offset) : pf_buffer_nadd(pf, s, ft_strlen(s));
+		(pf->type != 'C') ? pf_buffer_add(pf, s + pf->offset)
+			: pf_buffer_nadd(pf, s, ft_strlen(s));
 		(pf->f_minus == 1) ? width(pf, s) : 0;
 	}
 }
