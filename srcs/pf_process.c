@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/22 17:35:21 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/26 14:51:59 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ static void	precision(t_pf *pf, char **s)
 			}
 		}
 	}
-	else if (pf->precision > length)
+	else if (pf->precision > length && pf->type != 'C' && pf->type != 'S')
 	{
 		str = ft_strnew(pf->precision);
 		ft_memset(str, '0', pf->precision);
@@ -153,7 +153,6 @@ void		width(t_pf *pf, char *s)
 		ft_memset(w, '0', pf->width);
 	else
 		ft_memset(w, ' ', pf->width);
-
 	if (pf->f_zero && (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
 		pf_buffer_add(pf, "-");
 	if (pf->f_plus && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
@@ -161,6 +160,8 @@ void		width(t_pf *pf, char *s)
 	if (pf->f_space && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
 		pf_buffer_add(pf, " ");
 	if (pf->f_zero && pf->type == 'p')
+		pf_buffer_add(pf, "0x");
+	if (pf->f_sharp && pf->f_zero && !pf->f_minus && pf->type == 'x')
 		pf_buffer_add(pf, "0x");
 	pf_buffer_add(pf, w);
 	pf->width = 0;
@@ -199,11 +200,13 @@ void	pf_process(t_pf *pf)
 		}
 	}
 	if (pf->type == 'S')
-		s = get_wstr(va_arg(pf->arg, int *));
+		s = get_wstr(va_arg(pf->arg, int *), pf->precision);
 	if (pf->type == 'd' || pf->type == 'D' || pf->type == 'i')
 	{
 		if (pf->mod_l)
 			s = ft_itoa_base(va_arg(pf->arg, long), 10);
+		else if (pf->mod_h == 1 && (pf->type == 'd' || pf->type == 'i'))
+			s = ft_itoa_base((short)va_arg(pf->arg, int), 10);
 		else if (pf->mod_h == 2 && (pf->type == 'd' || pf->type == 'i'))
 			s = ft_itoa_base((char)va_arg(pf->arg, int), 10);
 		else if (pf->mod_j == 1)
@@ -282,6 +285,8 @@ void	pf_process(t_pf *pf)
 			pf_buffer_add(pf, s + 1);
 		else if (pf->f_space && (pf->type == 'd' || pf->type == 'D') && s[0] != '-')
 			pf_buffer_add(pf, s + 1);
+		else if (!pf->f_minus && pf->f_sharp && pf->f_zero && pf->type == 'x')
+			pf_buffer_add(pf, s + 2);
 		else if (pf->f_zero && pf->type == 'p')
 			pf_buffer_add(pf, s + 2);
 		else
