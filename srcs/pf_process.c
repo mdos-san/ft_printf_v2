@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/26 18:44:03 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/26 19:08:59 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static void	flag(t_pf *pf, char **s)
 			*s = ft_strjoin("0", *s);
 	}
 	if (pf->type == 'x' && pf->f_sharp && ft_strcmp("0", *s) != 0)
-			*s = ft_strjoin("0x", *s);
+		*s = ft_strjoin("0x", *s);
 	if (pf->type == 'X' && pf->f_sharp && ft_strcmp("0", *s) != 0)
-			*s = ft_strjoin("0X", *s);
+		*s = ft_strjoin("0X", *s);
 }
 
 static void	precision(t_pf *pf, char **s)
@@ -47,7 +47,6 @@ static void	precision(t_pf *pf, char **s)
 	}
 	else if (pf->type == 'p')
 	{
-
 		if (pf->p_given && pf->precision == 0 && ft_strcmp(*s, "0x0") == 0)
 			(*s)[2] = 0;
 		else if (pf->precision > length - 2)
@@ -136,11 +135,10 @@ void		width(t_pf *pf, char *s)
 	char	*w;
 
 	if (pf->type == 'c' && ft_strlen(s) == 0)
-		pf->width = ((int)pf->width - 1 > 0)
-			? pf->width - 1  : 0;
+		pf->width = ((int)pf->width - 1 > 0) ? pf->width - 1 : 0;
 	else
 		pf->width = ((int)pf->width - (int)ft_strlen(s) > 0)
-			? pf->width - ft_strlen(s)  : 0;
+			? pf->width - ft_strlen(s) : 0;
 	w = ft_strnew(pf->width);
 	if (pf->type == 'd' || pf->type == 'D' || pf->type == 'i')
 	{
@@ -174,18 +172,18 @@ void		width(t_pf *pf, char *s)
 	pf->width = 0;
 }
 
-static	int is_dioupx(char c)
+static int	is_dioupx(char c)
 {
 	if (c == 'd' || c == 'D' || c == 'i' || c == 'u' || c == 'U' || c == 'o' ||
-		c == 'O' || c == 'x' || c == 'X' ||c == 'p')
+		c == 'O' || c == 'x' || c == 'X' || c == 'p')
 		return (1);
 	return (0);
 }
 
-static	void get_offset(t_pf *pf, char *s)
+static void	get_offset(t_pf *pf, char *s)
 {
 	pf->offset = 0;
-	if (pf->f_zero && !pf->f_minus 
+	if (pf->f_zero && !pf->f_minus
 			&& (pf->type == 'd' || pf->type == 'D') && s[0] == '-')
 		pf->offset = 1;
 	else if (pf->f_zero && pf->f_plus
@@ -201,7 +199,7 @@ static	void get_offset(t_pf *pf, char *s)
 		pf->offset = 2;
 }
 
-static	void check_cs(t_pf *pf, char **s)
+static void	check_cs(t_pf *pf, char **s)
 {
 	if (pf->type == 'c')
 	{
@@ -213,7 +211,7 @@ static	void check_cs(t_pf *pf, char **s)
 			(*s)[0] = (char)va_arg(pf->arg, int);
 			if ((*s)[0] == '\0')
 			{
-				width(pf,*s);
+				width(pf, *s);
 				pf_buffer_add_null(pf);
 			}
 		}

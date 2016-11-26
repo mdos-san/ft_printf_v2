@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:25 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/21 13:02:01 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/26 19:04:45 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,46 @@ static void	flag_init(t_pf *pf)
 	pf->mod_z = 0;
 }
 
+static void	in_flag(t_pf *pf, unsigned int i)
+{
+	if (pf->input[i] == '+')
+	{
+		pf->f_plus = 1;
+		pf->f_space = 0;
+	}
+	if (pf->input[i] == ' ' && pf->f_plus == 0)
+		pf->f_space = 1;
+	if (pf->input[i] == '-')
+		pf->f_minus = 1;
+	if (pf->input[i] == '0')
+		pf->f_zero = 1;
+	if (pf->input[i] == '#')
+		pf->f_sharp = 1;
+}
+
+static void	in_status_p(t_pf *pf, unsigned int i)
+{
+	if (pf->input[i] == '*')
+	{
+		int in;
+
+		in = va_arg(pf->arg, int);
+		pf->precision = (in < 0) ? 0 : in;
+		pf->status = STATUS_P_END;
+	}
+	else if (ft_isdigit(pf->input[i]))
+	{
+		pf->precision = ft_atoi(pf->input + i);
+		pf->status = (ft_isdigit(pf->input[i + 1]))
+			? STATUS_P_PAR : STATUS_P_END;
+	}
+}
+
 static void	in(t_pf *pf, unsigned int i)
 {
 	if (ft_strchr(pf->list_flags, pf->input[i]) && pf->status < STATUS_W)
-	{
-		if (pf->input[i] == '+')
-		{
-			pf->f_plus = 1;
-			pf->f_space = 0;
-		}
-		if (pf->input[i] == ' ' && pf->f_plus == 0)
-			pf->f_space = 1;
-		if (pf->input[i] == '-')
-			pf->f_minus = 1;
-		if (pf->input[i] == '0')
-			pf->f_zero = 1;
-		if (pf->input[i] == '#')
-			pf->f_sharp = 1;
-	}
-	else if (pf->status < STATUS_W
-		&& (ft_isdigit(pf->input[i]) || pf->input[i] == '*'))
+		in_flag(pf, i);
+	else if (pf->status < STATUS_W && (ft_isdigit(pf->input[i]) || pf->input[i] == '*'))
 	{
 		pf->status = (ft_isdigit(pf->input[i + 1])) ? STATUS_W : STATUS_W_END;
 		pf->width = (pf->input[i] == '*')
@@ -97,21 +117,7 @@ static void	in(t_pf *pf, unsigned int i)
 			pf->status = STATUS_P_END;
 	}
 	else if (pf->status == STATUS_P)
-	{
-		if (pf->input[i] == '*')
-		{
-			int in;
-
-			in = va_arg(pf->arg, int);
-			pf->precision = (in < 0) ? 0 : in;
-			pf->status = STATUS_P_END;
-		}
-		else if (ft_isdigit(pf->input[i]))
-		{
-			pf->precision = ft_atoi(pf->input + i);
-			pf->status = (ft_isdigit(pf->input[i + 1])) ? STATUS_P_PAR : STATUS_P_END;
-		}
-	}
+		in_status_p(pf, i);
 	else if (pf->status == STATUS_P_PAR)
 		pf->status = (ft_isdigit(pf->input[i + 1])) ? STATUS_P_PAR : STATUS_P_END;
 	else if (ft_strchr(pf->list_mod, pf->input[i]))
