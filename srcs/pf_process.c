@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/26 18:37:24 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/26 18:44:03 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,9 @@ static void	flag(t_pf *pf, char **s)
 		if (pf->f_sharp && ft_strcmp("0", *s) != 0)
 			*s = ft_strjoin("0", *s);
 	}
-	if (pf->type == 'x')
-		if (pf->f_sharp && ft_strcmp("0", *s) != 0)
+	if (pf->type == 'x' && pf->f_sharp && ft_strcmp("0", *s) != 0)
 			*s = ft_strjoin("0x", *s);
-	if (pf->type == 'X')
-		if (pf->f_sharp && ft_strcmp("0", *s) != 0)
+	if (pf->type == 'X' && pf->f_sharp && ft_strcmp("0", *s) != 0)
 			*s = ft_strjoin("0X", *s);
 }
 
@@ -220,7 +218,7 @@ static	void check_cs(t_pf *pf, char **s)
 			}
 		}
 	}
-	if (pf->type == 's')
+	else if (pf->type == 's')
 	{
 		if (pf->mod_l)
 			pf->type = 'S';
@@ -239,7 +237,7 @@ void	pf_process(t_pf *pf)
 	check_cs(pf, &s);
 	if (pf->type == 'C')
 		s = (get_wchar(va_arg(pf->arg, int)));
-	if (pf->type == 'S')
+	else if (pf->type == 'S')
 		s = get_wstr(va_arg(pf->arg, int *), pf->precision);
 	(is_dioupx(pf->type)) ? va_get(pf, &s) : 0;
 	flag(pf, &s);

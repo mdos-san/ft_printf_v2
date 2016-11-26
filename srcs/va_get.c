@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/26 17:20:45 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/26 18:00:49 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/26 18:57:05 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,63 @@ static	int	get_base(char c)
 	return (0);
 }
 
-void	va_get(t_pf *pf, char **s)
+static void	uo(t_pf *pf, char **s)
 {
-	int		base;
-	int		up;
+	int		b;
+	int		u;
 	char	is_lower;
+
+	b = get_base(pf->type);
+	u = (pf->type == 'X') ? 1 : 0;
+	is_lower = ('a' <= pf->type && pf->type <= 'z') ? 1 : 0;
+	if (pf->mod_l)
+		*s = ft_uitoa_base(va_arg(pf->arg, unsigned long), b, u);
+	else if (pf->mod_h == 1 && is_lower)
+		*s = ft_uitoa_base((unsigned short)va_arg(pf->arg, unsigned int), b, u);
+	else if (pf->mod_h == 2 && is_lower)
+		*s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int), b, u);
+	else if (pf->mod_h == 2 && !is_lower)
+		*s = ft_uitoa_base((unsigned short)va_arg(pf->arg, unsigned int), b, u);
+	else if (pf->mod_z == 1)
+		*s = ft_uitoa_base(va_arg(pf->arg, size_t), b, u);
+	else if (pf->mod_j == 1)
+		*s = ft_uitoa_base(va_arg(pf->arg, uintmax_t), b, u);
+	else
+		*s = (is_lower)
+			? ft_uitoa_base(va_arg(pf->arg, unsigned int), b, u)
+			: ft_uitoa_base(va_arg(pf->arg, unsigned long), b, u);
+}
+
+static void	x(t_pf *pf, char **s)
+{
+	if (pf->mod_l)
+		*s = ft_uitoa_base(va_arg(pf->arg, unsigned long),
+				16, ((pf->type == 'x') ? 0 : 1));
+	else if (pf->mod_h == 2)
+		*s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int),
+				16, ((pf->type == 'x') ? 0 : 1));
+	else if (pf->mod_z)
+		*s = ft_uitoa_base(va_arg(pf->arg, size_t),
+				16, ((pf->type == 'x') ? 0 : 1));
+	else if (pf->mod_j)
+		*s = ft_uitoa_base(va_arg(pf->arg, uintmax_t),
+				16, ((pf->type == 'x') ? 0 : 1));
+	else
+		*s = ft_uitoa_base(va_arg(pf->arg, unsigned int),
+				16, ((pf->type == 'x') ? 0 : 1));
+}
+
+static void	p(t_pf *pf, char **s)
+{
 	char	*tmp_str;
 
-	base = get_base(pf->type);
-	up = (pf->type == 'X') ? 1 : 0;
-	is_lower = ('a' <= pf->type && pf->type <= 'z') ? 1 : 0;
+	tmp_str = ft_uitoa_base(va_arg(pf->arg, unsigned long long), 16, 0);
+	*s = ft_strjoin("0x", tmp_str);
+	ft_strdel(&tmp_str);
+}
+
+void		va_get(t_pf *pf, char **s)
+{
 	if (pf->type == 'd' || pf->type == 'D' || pf->type == 'i')
 	{
 		if (pf->mod_l)
@@ -50,42 +97,9 @@ void	va_get(t_pf *pf, char **s)
 				? ft_itoa_base(va_arg(pf->arg, int), 10)
 				: ft_itoa_base(va_arg(pf->arg, long), 10);
 	}
-	if (pf->type == 'u' || pf->type == 'U' || pf->type == 'o' || pf->type == 'O')
-	{
-		if (pf->mod_l)
-			*s = ft_uitoa_base(va_arg(pf->arg, unsigned long), base, up);
-		else if (pf->mod_h == 1 && is_lower)
-			*s = ft_uitoa_base((unsigned short)va_arg(pf->arg, unsigned int), base, up);
-		else if (pf->mod_h == 2 && is_lower)
-			*s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int), base, up);
-		else if (pf->mod_h == 2 && !is_lower)
-			*s = ft_uitoa_base((unsigned short)va_arg(pf->arg, unsigned int), base, up);
-		else if (pf->mod_z == 1)
-			*s = ft_uitoa_base(va_arg(pf->arg, size_t), base, up);
-		else if (pf->mod_j == 1)
-			*s = ft_uitoa_base(va_arg(pf->arg, uintmax_t), base, up);
-		else
-			*s = (is_lower)
-				? ft_uitoa_base(va_arg(pf->arg, unsigned int), base, up)
-				: ft_uitoa_base(va_arg(pf->arg, unsigned long), base, up);
-	}
-	if (pf->type == 'x' || pf->type == 'X')
-	{
-		if (pf->mod_l)
-			*s = ft_uitoa_base(va_arg(pf->arg, unsigned long), 16, ((pf->type == 'x') ? 0 : 1));
-		else if (pf->mod_h == 2)
-			*s = ft_uitoa_base((unsigned char)va_arg(pf->arg, unsigned int), 16, ((pf->type == 'x') ? 0 : 1));
-		else if (pf->mod_z)
-			*s = ft_uitoa_base(va_arg(pf->arg, size_t), 16, ((pf->type == 'x') ? 0 : 1));
-		else if (pf->mod_j)
-			*s = ft_uitoa_base(va_arg(pf->arg, uintmax_t), 16, ((pf->type == 'x') ? 0 : 1));
-		else
-			*s = ft_uitoa_base(va_arg(pf->arg, unsigned int), 16, ((pf->type == 'x') ? 0 : 1));
-	}
-	if (pf->type == 'p')
-	{
-		tmp_str = ft_uitoa_base(va_arg(pf->arg, unsigned long long), 16, 0);
-		*s = ft_strjoin("0x", tmp_str);
-		ft_strdel(&tmp_str);
-	}
+	if (pf->type == 'u' || pf->type == 'U'
+		|| pf->type == 'o' || pf->type == 'O')
+		uo(pf, s);
+	(pf->type == 'x' || pf->type == 'X') ? x(pf, s) : 0;
+	(pf->type == 'p') ? p(pf, s) : 0;
 }
