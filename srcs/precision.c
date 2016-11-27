@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/27 15:19:37 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/27 15:26:18 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/27 15:39:46 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,34 @@ static void	p_x(t_pf *pf, char **s, char **str, unsigned int length)
 	}
 }
 
+static void	p_p(t_pf *pf, char **s, char **str, unsigned int length)
+{
+	if (pf->p_given && pf->precision == 0 && ft_strcmp(*s, "0x0") == 0)
+		(*s)[2] = 0;
+	else if (pf->precision > length - 2)
+	{
+		*str = ft_strnew(pf->precision + 2);
+		ft_memset(*str, '0', pf->precision + 2);
+		(*str)[0] = '0';
+		(*str)[1] = 'x';
+		(*str)[pf->precision - length + 4] = 0;
+		*s = ft_strjoin(*str, *s + 2);
+	}
+}
+
+static void	p_uo(t_pf *pf, char **s, char **str, unsigned int length)
+{
+	if (pf->p_given && pf->precision == 0
+		&& ft_strcmp(*s, "0") == 0 && !pf->f_sharp)
+		(*s)[0] = 0;
+	else if (pf->precision > length)
+	{
+		*str = ft_strnew(pf->precision);
+		ft_memset(*str, '0', pf->precision);
+		*s = ft_strjoin(*str + length, *s);
+	}
+}
+
 void		precision(t_pf *pf, char **s)
 {
 	unsigned int	length;
@@ -73,38 +101,16 @@ void		precision(t_pf *pf, char **s)
 	length = ft_strlen(*s);
 	if (pf->type == 's' || pf->type == 'S')
 	{
-		if (0 < pf->precision && pf->precision < length)
+		if (0 < pf->precision && pf->precision < length && pf->type == 's')
 			(*s)[pf->precision] = '\0';
-		if (pf->status == STATUS_P_END && pf->precision == 0)
-			(*s)[0] = '\0';
+		(pf->status == STATUS_P_END && pf->precision == 0) ? (*s)[0] = '\0' : 0;
 	}
 	else if (pf->type == 'p')
-	{
-		if (pf->p_given && pf->precision == 0 && ft_strcmp(*s, "0x0") == 0)
-			(*s)[2] = 0;
-		else if (pf->precision > length - 2)
-		{
-			str = ft_strnew(pf->precision + 2);
-			ft_memset(str, '0', pf->precision + 2);
-			str[0] = '0';
-			str[1] = 'x';
-			str[pf->precision - length + 4] = 0;
-			*s = ft_strjoin(str, *s + 2);
-		}
-	}
+		p_p(pf, s, &str, length);
 	else if ((pf->type == 'd' || pf->type == 'D' || pf->type == 'i'))
 		p_d(pf, s, &str, length);
 	else if (pf->type == 'u' || pf->type == 'o' || pf->type == 'O')
-	{
-		if (pf->p_given && pf->precision == 0 && ft_strcmp(*s, "0") == 0 && !pf->f_sharp)
-			(*s)[0] = 0;
-		else if (pf->precision > length)
-		{
-			str = ft_strnew(pf->precision);
-			ft_memset(str, '0', pf->precision);
-			*s = ft_strjoin(str + length, *s);
-		}
-	}
+		p_uo(pf, s, &str, length);
 	else if (pf->type == 'x' || pf->type == 'X')
 		p_x(pf, s, &str, length);
 	else if (pf->precision > length && pf->type != 'C' && pf->type != 'S')

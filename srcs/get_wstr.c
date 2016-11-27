@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:01 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/26 14:00:11 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/27 15:38:51 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ char	*get_wstr(int *istr, unsigned int pre)
 				return (prev);
 		}
 		else
-		{
 			ret = get_wchar(istr[i]);
-		}
 		++i;
 	}
 	return (ret);
