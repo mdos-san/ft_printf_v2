@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:13:54 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/27 14:58:21 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/27 15:08:53 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ char				*get_wstr(int *istr, unsigned int pre);
 void				width(t_pf *pf, char *s);
 void				va_get(t_pf *pf, char **s);
 void				parse(t_pf *pf, unsigned int i);
+void				width(t_pf *pf, char *s);
 
 #endif
