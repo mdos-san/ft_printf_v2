@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/27 15:21:27 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/27 16:00:54 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,6 @@ void		pf_process(t_pf *pf)
 			: pf_buffer_nadd(pf, s, ft_strlen(s));
 		(pf->f_minus == 1) ? width(pf, s) : 0;
 	}
+	if (pf->type != 'C' && pf->type != 'S')
+		ft_strdel(&s);
 }
