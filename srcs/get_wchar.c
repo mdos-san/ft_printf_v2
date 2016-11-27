@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:08:46 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/20 09:08:48 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/27 14:24:42 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,7 @@ char				*get_wchar(int c)
 		mask = mask_init(4);
 	mask_fill(mask, nbr);
 	result = bin_to_int(mask);
-	ft_strdel(&nbr);
 	nbr = (char*)&result;
-	ft_strdel(&mask);
 	re[0] = nbr[3];
 	re[1] = nbr[2];
 	re[2] = nbr[1];
