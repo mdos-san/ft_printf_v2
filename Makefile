@@ -6,7 +6,7 @@
 #    By: mdos-san <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 12:59:09 by mdos-san          #+#    #+#              #
-#    Updated: 2016/11/27 15:22:21 by mdos-san         ###   ########.fr        #
+#    Updated: 2016/11/27 15:44:59 by mdos-san         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ TMP_C_2 = \
 			get_wstr.c\
 			va_get.c\
 			parse.c\
+			parse_fct.c\
 			width.c\
 			precision.c
 SRC_C_2=$(TMP_C_2:%=srcs/%)

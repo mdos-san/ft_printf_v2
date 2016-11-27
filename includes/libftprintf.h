@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:13:54 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/27 15:21:44 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/27 15:52:41 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include "libft.h"
 
-# define PF_BUFFER 1024
+# define PF_BUFFER 2048
 # define STATUS_OUT 0
 # define STATUS_IN 1
 # define STATUS_W 2
@@ -89,5 +89,7 @@ void				va_get(t_pf *pf, char **s);
 void				parse(t_pf *pf, unsigned int i);
 void				width(t_pf *pf, char *s);
 void				precision(t_pf *pf, char **s);
+void				in_flag(t_pf *pf, unsigned int i);
+void				go_out(t_pf *pf, unsigned int i);
 
 #endif
