@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:01 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/27 15:38:51 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/30 17:09:57 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ char	*get_wstr(int *istr, unsigned int pre)
 		if (ret)
 		{
 			prev = ret;
-			ret = ft_strjoin(ret, get_wchar(istr[i]));
+			ret = ft_strjoin_del(ret, get_wchar(istr[i]), 2);
 			if (ft_strlen(ret) > pre && pre != 0)
 				return (prev);
+			ft_strdel(&prev);
 		}
 		else
 			ret = get_wchar(istr[i]);

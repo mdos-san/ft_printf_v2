@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/27 15:19:37 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/30 16:10:17 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/30 17:40:48 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,12 @@ static void	p_x(t_pf *pf, char **s, char **str, unsigned int length)
 			(*str)[pf->precision - length + 4] = 0;
 			*s = ft_strjoin(*str, *s + 2);
 		}
-		else
+		else if (pf->precision > length)
 		{
 			*str = ft_strnew(pf->precision);
 			ft_memset(*str, '0', pf->precision);
-			*s = ft_strjoin_del(*str + length, *s, 2);
+			(*str)[pf->precision - length] = 0;
+			*s = ft_strjoin_del(*str, *s, 2);
 		}
 	}
 }
@@ -89,7 +90,8 @@ static void	p_uo(t_pf *pf, char **s, char **str, unsigned int length)
 	{
 		*str = ft_strnew(pf->precision);
 		ft_memset(*str, '0', pf->precision);
-		*s = ft_strjoin_del(*str + length, *s, 2);
+		(*str)[pf->precision - length] = 0;
+		*s = ft_strjoin_del(*str, *s, 2);
 	}
 }
 
@@ -98,9 +100,8 @@ void		precision(t_pf *pf, char **s)
 	unsigned int	length;
 	char			*str;
 
-	str = NULL;
 	length = ft_strlen(*s);
-	if (pf->type == 's' || pf->type == 'S')
+	if ((str = NULL) || pf->type == 's' || pf->type == 'S')
 	{
 		if (0 < pf->precision && pf->precision < length && pf->type == 's')
 			(*s)[pf->precision] = '\0';
