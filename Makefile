@@ -6,7 +6,7 @@
 #    By: mdos-san <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 12:59:09 by mdos-san          #+#    #+#              #
-#    Updated: 2016/11/27 15:44:59 by mdos-san         ###   ########.fr        #
+#    Updated: 2016/11/30 15:57:48 by mdos-san         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ TMP_C=		ft_memset.c		ft_bzero.c		ft_memcpy.c\
 			ft_itoa.c		ft_lstnew.c		ft_lstdelone.c\
 			ft_lstdel.c		ft_lstadd.c		ft_lstiter.c\
 			ft_lstmap.c		ft_lstnew_cpy.c	get_next_line.c\
+			ft_strjoin_del.c\
 			str_array_new.c\
 			str_array_count.c\
 			str_array_dup.c\
@@ -70,11 +71,14 @@ DEL_2=$(TMP_C_2:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(DEL_1) $(DEL_2)
+$(NAME): includes/libft.h $(DEL_1) $(DEL_2)
 	@echo "Creating libftprintf.a..."
 	@ar rc $(NAME) $(DEL_1) $(DEL_2)
 	@ranlib $(NAME)
 	@echo "Done !"
+
+includes/libft.h:
+	cp libft/includes/libft.h includes
 
 %.o: libft/%.c
 	@echo "Compiling $<"

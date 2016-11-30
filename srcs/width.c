@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/27 15:08:26 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/27 15:08:40 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/30 16:05:37 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ void		width(t_pf *pf, char *s)
 		ft_memset(w, ' ', pf->width);
 	w_ex(pf, s);
 	pf_buffer_add(pf, w);
+	ft_strdel(&w);
 	pf->width = 0;
 }

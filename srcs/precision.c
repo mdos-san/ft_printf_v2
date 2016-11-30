@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/27 15:19:37 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/27 15:39:46 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/30 16:10:17 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	p_d(t_pf *pf, char **s, char **str, unsigned int length)
 			*str = ft_strnew(pf->precision);
 			ft_memset(*str, '0', pf->precision);
 			(*str)[pf->precision - length] = 0;
-			*s = ft_strjoin(*str, *s);
+			*s = ft_strjoin_del(*str, *s, 2);
 		}
 		else
 		{
@@ -33,9 +33,9 @@ static void	p_d(t_pf *pf, char **s, char **str, unsigned int length)
 			*s = ft_strjoin(*str + length, *s + 1);
 		}
 		if (pf->f_plus)
-			*s = ft_strjoin("+", *s);
+			*s = ft_strjoin_del("+", *s, 2);
 		if (pf->f_space)
-			*s = ft_strjoin(" ", *s);
+			*s = ft_strjoin_del(" ", *s, 2);
 	}
 	else if (pf->status == SP && pf->precision == 0 && ft_strcmp("0", *s) == 0)
 		(*s)[0] = '\0';
@@ -60,7 +60,7 @@ static void	p_x(t_pf *pf, char **s, char **str, unsigned int length)
 		{
 			*str = ft_strnew(pf->precision);
 			ft_memset(*str, '0', pf->precision);
-			*s = ft_strjoin(*str + length, *s);
+			*s = ft_strjoin_del(*str + length, *s, 2);
 		}
 	}
 }
@@ -76,7 +76,7 @@ static void	p_p(t_pf *pf, char **s, char **str, unsigned int length)
 		(*str)[0] = '0';
 		(*str)[1] = 'x';
 		(*str)[pf->precision - length + 4] = 0;
-		*s = ft_strjoin(*str, *s + 2);
+		*s = ft_strjoin_del(*str, *s + 2, 0);
 	}
 }
 
@@ -89,7 +89,7 @@ static void	p_uo(t_pf *pf, char **s, char **str, unsigned int length)
 	{
 		*str = ft_strnew(pf->precision);
 		ft_memset(*str, '0', pf->precision);
-		*s = ft_strjoin(*str + length, *s);
+		*s = ft_strjoin_del(*str + length, *s, 2);
 	}
 }
 
@@ -98,6 +98,7 @@ void		precision(t_pf *pf, char **s)
 	unsigned int	length;
 	char			*str;
 
+	str = NULL;
 	length = ft_strlen(*s);
 	if (pf->type == 's' || pf->type == 'S')
 	{
@@ -117,7 +118,7 @@ void		precision(t_pf *pf, char **s)
 	{
 		str = ft_strnew(pf->precision);
 		ft_memset(str, '0', pf->precision);
-		*s = ft_strjoin(str + length, *s);
+		*s = ft_strjoin_del(str + length, *s, 2);
 	}
-	pf->precision = 0;
+	ft_strdel(&str);
 }

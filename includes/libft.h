@@ -6,7 +6,7 @@
 /*   By: mdos-san <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 12:52:57 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/09/19 11:28:02 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/30 15:49:10 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_strjoin_del(char *s1, char *s2, int del);
 char				*ft_strtrim(char const *s);
 void				ft_putchar(char c);
 void				ft_putchar_fd(char c, int fd);
@@ -83,10 +84,13 @@ void				ft_lstadd(t_list **lst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 t_list				*ft_lstnew_cpy(void const *content, size_t content_size);
+void				ft_lstpushb(t_list *lst,
+						void *content, size_t content_size);
 int					get_next_line(int fd, char **line);
 char				**str_array_new(void);
 int					str_array_count(char **array);
 char				**str_array_dup(char **array, int extra_row);
+void				str_array_cpy(char **dest, char **src);
 void				str_array_del(char ***addr);
 void				str_array_add(char ***array, char *str);
 void				str_array_sub(char ***array, char *str);

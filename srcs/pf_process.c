@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:09:18 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/11/27 16:00:54 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/11/30 16:10:12 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ static void	flag(t_pf *pf, char **s)
 	if (pf->type == 'd' || pf->type == 'i')
 	{
 		if ((*s)[0] != '-' && pf->f_plus == 1)
-			(*s) = ft_strjoin("+", *s);
+			(*s) = ft_strjoin_del("+", *s, 2);
 		if (pf->f_space == 1 && (*s)[0] != '-')
-			(*s) = ft_strjoin(" ", *s);
+			(*s) = ft_strjoin_del(" ", *s, 2);
 	}
 	if (pf->type == 'o' || pf->type == 'O')
 	{
 		if (pf->f_sharp && ft_strcmp("0", *s) != 0)
-			*s = ft_strjoin("0", *s);
+			*s = ft_strjoin_del("0", *s, 2);
 	}
 	if (pf->type == 'x' && pf->f_sharp && ft_strcmp("0", *s) != 0)
-		*s = ft_strjoin("0x", *s);
+		*s = ft_strjoin_del("0x", *s, 2);
 	if (pf->type == 'X' && pf->f_sharp && ft_strcmp("0", *s) != 0)
-		*s = ft_strjoin("0X", *s);
+		*s = ft_strjoin_del("0X", *s, 2);
 }
 
 static int	is_dioupx(char c)
@@ -94,12 +94,13 @@ void		pf_process(t_pf *pf)
 
 	check_cs(pf, &s);
 	if (pf->type == 'C')
-		s = (get_wchar(va_arg(pf->arg, int)));
+		s = get_wchar(va_arg(pf->arg, int));
 	else if (pf->type == 'S')
 		s = get_wstr(va_arg(pf->arg, int *), pf->precision);
 	(is_dioupx(pf->type)) ? va_get(pf, &s) : 0;
 	flag(pf, &s);
 	(pf->type != 'c') ? precision(pf, &s) : 0;
+	pf->precision = 0;
 	if (pf->type != 'c' || s[0])
 	{
 		(pf->f_minus == 0) ? width(pf, s) : 0;
@@ -108,6 +109,5 @@ void		pf_process(t_pf *pf)
 			: pf_buffer_nadd(pf, s, ft_strlen(s));
 		(pf->f_minus == 1) ? width(pf, s) : 0;
 	}
-	if (pf->type != 'C' && pf->type != 'S')
-		ft_strdel(&s);
+	ft_strdel(&s);
 }
